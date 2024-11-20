@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Common\StatusMessage;
+use App\Events\DataGot;
 use App\Exceptions\ApiException;
 use App\Exceptions\DatabaseException;
 use App\Http\Controllers\Controller;
@@ -35,6 +36,17 @@ class DataController extends Controller
     {
         $count = $request->input('count');
         return $this->dataService->createData($count);
+    }
+
+    public function storeByEvent(Request $request): JsonResponse
+    {
+        $count = $request->input('count');
+        $service = app(DataService::class);
+        event(new DataGot($service, $count));
+        $headers = array(
+            'Content-Type' => 'application/json; charset=utf-8'
+        );
+        return response()->json(['status' => StatusMessage::EVENT_SUCCESS, 'detail' => '[event] 資料產生中，將產生'.$count.'筆'], Response::HTTP_OK, $headers, JSON_UNESCAPED_UNICODE);
     }
 
     /**

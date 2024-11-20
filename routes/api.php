@@ -15,5 +15,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['namespace' => 'App\Http\Controllers\Api\v1', 'prefix' => 'v1'], function () {
-    Route::post('data', 'DataController@store');
+    Route::post('command/data', 'DataController@store');
+    Route::post('event/data', 'DataController@storeByEvent');
 });
