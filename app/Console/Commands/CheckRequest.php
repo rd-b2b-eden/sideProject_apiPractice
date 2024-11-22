@@ -40,10 +40,10 @@ class CheckRequest extends Command
             $sum = 0;
             foreach ($request as $value){
                 $count = Redis::get($value);
-                $sum += $count;
-                if (is_null($count)) {
+                if ($count === null) {
                     $this->error('[error] 參數錯誤');
                 }else{
+                    $sum += intval($count);
                     $response = $dataService->createData($count);
                     Redis::del($value);
                 }
