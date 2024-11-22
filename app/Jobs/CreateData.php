@@ -17,14 +17,14 @@ class CreateData implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected DataService $dataService;
-    protected mixed $count;
+    protected ?int $count;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(DataService  $dataService, mixed $count)
+    public function __construct(DataService  $dataService, ?int $count)
     {
         $this->dataService = $dataService;
         $this->count = $count;
