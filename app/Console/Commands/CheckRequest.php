@@ -47,11 +47,11 @@ class CheckRequest extends Command
                 $count = Redis::get($value);
                 if ($count === null) {
                     $this->error('[error] 參數錯誤');
-                }else{
-                    $sum += intval($count);
-                    $response = $this->dataService->createData($count);
-                    Redis::del($value);
+                    return;
                 }
+                $sum += intval($count);
+                $response = $this->dataService->createData($count);
+                Redis::del($value);
             }
             $this->info('已完成'.$queueCount.'筆queue，共產生'.$sum.'筆資料');
         }
