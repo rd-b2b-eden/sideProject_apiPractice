@@ -16,14 +16,14 @@ class DataGot
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     private DataService $dataService;
-    private mixed $count;
+    private int $count;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(DataService $dataService, mixed $count)
+    public function __construct(DataService $dataService, int $count)
     {
         $this->dataService = $dataService;
         $this->count = $count;
