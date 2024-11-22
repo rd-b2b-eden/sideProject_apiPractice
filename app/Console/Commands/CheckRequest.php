@@ -25,39 +25,28 @@ class CheckRequest extends Command
     protected $description = '檢查是否有request在redis需要處理';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      *
      * @throws DatabaseException
      */
     public function handle(): void
     {
-        $redis = Redis::connection();
-        $request = $redis->keys('data-request-*');
+        $request = Redis::keys('data-request-*');
         $queueCount = count($request);
-        if (is_null($request)) {
+        if (empty($request)) {
             $this->info('無任何request需處理');
         }else{
             $dataService = new DataService();
             $sum = 0;
             foreach ($request as $value){
-                $count = $redis->get($value);
+                $count = Redis::get($value);
                 $sum += $count;
                 if (is_null($count)) {
                     $this->error('[error] 參數錯誤');
                 }else{
                     sleep(1);   // 延遲1秒
                     $response = $dataService->createData($count);
-                    $redis->del($value);
+                    Redis::del($value);
                 }
             }
             $this->info('已完成'.$queueCount.'筆queue，共產生'.$sum.'筆資料');
