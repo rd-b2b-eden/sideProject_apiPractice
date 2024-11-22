@@ -55,6 +55,7 @@ class CheckRequest extends Command
                 if (is_null($count)) {
                     $this->error('[error] 參數錯誤');
                 }else{
+                    sleep(1);   // 延遲1秒
                     $response = $dataService->createData($count);
                     $redis->del($value);
                 }
