@@ -43,7 +43,7 @@ class Handler extends ExceptionHandler
         });
     }
 
-    public function render($request, Throwable $exception): Response|JsonResponse|ResponseAlias
+    public function render($request, Throwable $exception): JsonResponse
     {
         $defaultError = [
             'status' => StatusMessage::ERROR,
