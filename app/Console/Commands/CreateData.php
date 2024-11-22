@@ -42,7 +42,7 @@ class CreateData extends Command
     public function handle(): void
     {
         $count = $this->argument('count');
-        if (is_null($count)) {
+        if ($count === null) {
             throw new ApiException('[parameter] 輸入參數count錯誤');
         }else{
             $dataService = new DataService();
