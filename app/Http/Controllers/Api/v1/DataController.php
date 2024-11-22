@@ -20,14 +20,6 @@ class DataController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function storeByCommand(Request $request): JsonResponse
@@ -64,29 +56,5 @@ class DataController extends Controller
             'Content-Type' => 'application/json; charset=utf-8'
         );
         return response()->json(['status' => StatusMessage::EVENT_SUCCESS, 'detail' => '[job] 資料產生中，將產生'.$count.'筆'], Response::HTTP_OK, $headers, JSON_UNESCAPED_UNICODE);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

@@ -2,9 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Exceptions\ApiException;
 use App\Exceptions\DatabaseException;
-use App\Models\Data;
 use App\Service\DataService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Redis;
