@@ -4,12 +4,14 @@ namespace App\Console\Commands;
 
 use App\Exceptions\ApiException;
 use App\Exceptions\DatabaseException;
+use App\Models\Data;
 use App\Service\DataService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Redis;
 
 class CheckRequest extends Command
 {
+    protected DataService $dataService;
     /**
      * The name and signature of the console command.
      *
@@ -24,6 +26,12 @@ class CheckRequest extends Command
      */
     protected $description = '檢查是否有request在redis需要處理';
 
+    public function __construct()
+    {
+        $this->dataService = new DataService();
+        parent::__construct();
+    }
+
     /**
      * Execute the console command.
      *
@@ -36,7 +44,6 @@ class CheckRequest extends Command
         if (empty($request)) {
             $this->info('無任何request需處理');
         }else{
-            $dataService = new DataService();
             $sum = 0;
             foreach ($request as $value){
                 $count = Redis::get($value);
@@ -44,7 +51,7 @@ class CheckRequest extends Command
                     $this->error('[error] 參數錯誤');
                 }else{
                     $sum += intval($count);
-                    $response = $dataService->createData($count);
+                    $response = $this->dataService->createData($count);
                     Redis::del($value);
                 }
             }

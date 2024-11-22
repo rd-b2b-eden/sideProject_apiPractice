@@ -44,10 +44,9 @@ class CreateData extends Command
         $count = $this->argument('count');
         if ($count === null) {
             throw new ApiException('[parameter] 輸入參數count錯誤');
-        }else{
-            $dataService = new DataService();
-            $response = $dataService->createData($count);
-            $this->info('資料產生成功，共產生' . $count . '筆');
         }
+        $dataService = new DataService();
+        $response = $dataService->createData($count);
+        $this->info('資料產生成功，共產生' . $count . '筆');
     }
 }
