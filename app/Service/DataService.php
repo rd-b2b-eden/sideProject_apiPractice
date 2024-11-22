@@ -19,9 +19,9 @@ class DataService
      */
     public function createData($count): JsonResponse
     {
-        if (!is_null($count)) {
+        if ($count !== null) {
             // 有資料
-            $count = intval($count);
+            $count = (int)$count;
             // 隨機產生資料
             try {
                 sleep($this->sleepTime);

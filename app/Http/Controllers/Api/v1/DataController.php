@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DataController extends Controller
 {
+    private DataService $dataService;
+
     public function __construct(DataService $dataService)
     {
         $this->dataService = $dataService;
@@ -31,16 +33,14 @@ class DataController extends Controller
                 'Content-Type' => 'application/json; charset=utf-8'
             );
             return response()->json(['status' => StatusMessage::EVENT_SUCCESS, 'detail' => '[command] 資料產生中，將產生'.$count.'筆'], Response::HTTP_OK, $headers, JSON_UNESCAPED_UNICODE);
-        }else{
-            throw new ApiException('[parameter] 輸入參數count錯誤');
         }
+        throw new ApiException('[parameter] 輸入參數count錯誤');
     }
 
     public function storeByEvent(Request $request): JsonResponse
     {
         $count = $request->input('count');
-        $service = app(DataService::class);
-        event(new DataGot($service, $count));
+        event(new DataGot($this->dataService, $count));
         $headers = array(
             'Content-Type' => 'application/json; charset=utf-8'
         );
@@ -50,8 +50,7 @@ class DataController extends Controller
     public function storeByJob(Request $request): JsonResponse
     {
         $count = $request->input('count');
-        $service = app(DataService::class);
-        $this->dispatch(new CreateData($service, $count));
+        $this->dispatch(new CreateData($this->dataService, $count));
         $headers = array(
             'Content-Type' => 'application/json; charset=utf-8'
         );

@@ -53,7 +53,7 @@ class CheckRequest extends Command
                 $response = $this->dataService->createData($count);
                 Redis::del($value);
             }
-            $this->info('已完成'.$queueCount.'筆queue，共產生'.$sum.'筆資料');
+            $this->info('已完成' . $queueCount . '筆queue，共產生' . $sum . '筆資料');
         }
     }
 }
