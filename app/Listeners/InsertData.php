@@ -7,7 +7,7 @@ use App\Exceptions\DatabaseException;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class InsertData
+class InsertData implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -28,6 +28,7 @@ class InsertData
      */
     public function handle(DataGot $event): void
     {
+        sleep(1);   // 延遲1秒
         $dataService = $event->getDataService();
         $count = $event->getCount();
         $dataService->createData($count);

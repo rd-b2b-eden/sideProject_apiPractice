@@ -7,6 +7,7 @@ use App\Events\DataGot;
 use App\Exceptions\ApiException;
 use App\Exceptions\DatabaseException;
 use App\Http\Controllers\Controller;
+use App\Jobs\CreateData;
 use App\Models\Data;
 use App\Service\DataService;
 use Illuminate\Http\JsonResponse;
@@ -47,6 +48,17 @@ class DataController extends Controller
             'Content-Type' => 'application/json; charset=utf-8'
         );
         return response()->json(['status' => StatusMessage::EVENT_SUCCESS, 'detail' => '[event] 資料產生中，將產生'.$count.'筆'], Response::HTTP_OK, $headers, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function storeByJob(Request $request): JsonResponse
+    {
+        $count = $request->input('count');
+        $service = app(DataService::class);
+        $this->dispatch(new CreateData($service, $count));
+        $headers = array(
+            'Content-Type' => 'application/json; charset=utf-8'
+        );
+        return response()->json(['status' => StatusMessage::EVENT_SUCCESS, 'detail' => '[job] 資料產生中，將產生'.$count.'筆'], Response::HTTP_OK, $headers, JSON_UNESCAPED_UNICODE);
     }
 
     /**
