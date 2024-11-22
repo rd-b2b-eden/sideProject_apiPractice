@@ -28,7 +28,6 @@ class InsertData implements ShouldQueue
      */
     public function handle(DataGot $event): void
     {
-        sleep(1);   // 延遲1秒
         $dataService = $event->getDataService();
         $count = $event->getCount();
         $dataService->createData($count);

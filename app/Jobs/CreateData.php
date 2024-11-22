@@ -38,7 +38,6 @@ class CreateData implements ShouldQueue
      */
     public function handle(): void
     {
-        sleep(1);   // 延遲1秒
         $this->dataService->createData($this->count);
     }
 }

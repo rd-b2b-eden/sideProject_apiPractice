@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DataService
 {
+    private int $sleepTime = 1; //延遲時間
     /**
      * @throws DatabaseException
      */
@@ -23,6 +24,7 @@ class DataService
             $count = intval($count);
             // 隨機產生資料
             try {
+                sleep($this->sleepTime);
                 Data::factory()->count($count)->create();
             }catch (\Exception $exception){
                 throw new DatabaseException('database insert error.');
