@@ -4,22 +4,28 @@ namespace App\Listeners;
 
 use App\Events\DataGot;
 use App\Exceptions\DatabaseException;
+use App\Service\DataService;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class InsertData implements ShouldQueue
 {
+    private DataService $dataService;
+
+    public function __construct(DataService $dataService)
+    {
+        $this->dataService = $dataService;
+    }
+
     /**
      * Handle the event.
      *
-     * @param \App\Events\DataGot $event
+     * @param DataGot $event
      * @return void
      * @throws DatabaseException
      */
     public function handle(DataGot $event): void
     {
-        $dataService = $event->getDataService();
         $count = $event->getCount();
-        $dataService->createData($count);
+        $this->dataService->createData($count);
     }
 }

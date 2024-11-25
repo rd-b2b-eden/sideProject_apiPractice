@@ -43,12 +43,8 @@ class CheckRequest extends Command
             $sum = 0;
             foreach ($request as $value){
                 $count = Redis::get($value);
-                if ($count === null) {
-                    $this->error('[error] 參數錯誤');
-                    return;
-                }
-                $sum += intval($count);
-                $response = $dataService->createData($count);
+                $sum += (int)$count;
+                $dataService->createData($count);
                 Redis::del($value);
             }
             $this->info('已完成' . $queueCount . '筆queue，共產生' . $sum . '筆資料');

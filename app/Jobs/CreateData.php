@@ -3,10 +3,8 @@
 namespace App\Jobs;
 
 use App\Exceptions\DatabaseException;
-use App\Models\Data;
 use App\Service\DataService;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -16,28 +14,27 @@ class CreateData implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected DataService $dataService;
-    protected ?int $count;
+    private int $count;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(DataService  $dataService, ?int $count)
+    public function __construct(int $count)
     {
-        $this->dataService = $dataService;
         $this->count = $count;
     }
 
     /**
      * Execute the job.
      *
+     * @param DataService $dataService
      * @return void
      * @throws DatabaseException
      */
-    public function handle(): void
+    public function handle(DataService $dataService): void
     {
-        $this->dataService->createData($this->count);
+        $dataService->createData($this->count);
     }
 }

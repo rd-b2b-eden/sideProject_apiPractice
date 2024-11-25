@@ -13,30 +13,20 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DataService
 {
-    private int $sleepTime = 1; //延遲時間
+    private int $sleepSecond = 1; //延遲時間
     /**
      * @throws DatabaseException
      */
-    public function createData($count): JsonResponse
+    public function createData(int $count): void
     {
-        if ($count !== null) {
-            // 有資料
-            $count = (int)$count;
-            // 隨機產生資料
-            try {
-                sleep($this->sleepTime);
-                Data::factory()->count($count)->create();
-            }catch (\Exception $exception){
-                throw new DatabaseException('database insert error.');
-            }
-        }else{
-            // 無資料
-            throw new ApiException(500);
+        // 隨機產生資料
+        sleep($this->sleepSecond);
+        for ($i = 0; $i < $count; $i++) {
+            Data::create([
+                'id' => Str::uuid()->toString(),
+                'description' => Str::random(),
+            ]);
         }
-        $headers = array(
-            'Content-Type' => 'application/json; charset=utf-8'
-        );
-        return response()->json(['status' => StatusMessage::SUCCESS, 'detail' => '資料產生成功，共產生'.$count.'筆'], Response::HTTP_OK, $headers, JSON_UNESCAPED_UNICODE);
     }
 
     /**
