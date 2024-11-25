@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Redis;
 
 class CheckRequest extends Command
 {
-    protected DataService $dataService;
     /**
      * The name and signature of the console command.
      *
@@ -26,7 +25,6 @@ class CheckRequest extends Command
 
     public function __construct()
     {
-        $this->dataService = new DataService();
         parent::__construct();
     }
 
@@ -35,7 +33,7 @@ class CheckRequest extends Command
      *
      * @throws DatabaseException
      */
-    public function handle(): void
+    public function handle(DataService $dataService): void
     {
         $request = Redis::keys('data-request-*');
         $queueCount = count($request);
@@ -50,7 +48,7 @@ class CheckRequest extends Command
                     return;
                 }
                 $sum += intval($count);
-                $response = $this->dataService->createData($count);
+                $response = $dataService->createData($count);
                 Redis::del($value);
             }
             $this->info('已完成' . $queueCount . '筆queue，共產生' . $sum . '筆資料');
