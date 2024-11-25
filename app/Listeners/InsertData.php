@@ -9,23 +9,17 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 class InsertData implements ShouldQueue
 {
-    private DataService $dataService;
-
-    public function __construct(DataService $dataService)
-    {
-        $this->dataService = $dataService;
-    }
-
     /**
      * Handle the event.
      *
      * @param DataGot $event
+     * @param DataService $dataService
      * @return void
      * @throws DatabaseException
      */
-    public function handle(DataGot $event): void
+    public function handle(DataGot $event, DataService $dataService): void
     {
         $count = $event->getCount();
-        $this->dataService->createData($count);
+        $dataService->createData($count);
     }
 }

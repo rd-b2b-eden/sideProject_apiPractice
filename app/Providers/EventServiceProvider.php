@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Events\DataGot;
 use App\Listeners\InsertData;
+use App\Service\DataService;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -14,9 +16,7 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
-        DataGot::class => [
-            InsertData::class,
-        ]
+
     ];
 
     /**
@@ -24,8 +24,11 @@ class EventServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
-        //
+        Event::listen(DataGot::class, function ($event) {
+            app(InsertData::class)
+                ->handle($event, app(DataService::class));
+        });
     }
 }
