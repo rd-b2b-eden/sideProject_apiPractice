@@ -29,10 +29,7 @@ class DataController extends Controller
         $count = $request->input('count');
         if (isset($count)) {
             $this->dataService->createQueue($count);
-            $headers = array(
-                'Content-Type' => 'application/json; charset=utf-8'
-            );
-            return response()->json(['status' => StatusMessage::EVENT_SUCCESS, 'detail' => '[command] 資料產生中，將產生'.$count.'筆'], Response::HTTP_OK, $headers, JSON_UNESCAPED_UNICODE);
+            return response()->json(['status' => StatusMessage::EVENT_SUCCESS, 'detail' => '[command] 資料產生中，將產生'.$count.'筆'], Response::HTTP_OK, [], JSON_UNESCAPED_UNICODE);
         }
         throw new ApiException('[parameter] 輸入參數count錯誤');
     }
@@ -41,19 +38,13 @@ class DataController extends Controller
     {
         $count = $request->input('count');
         event(new DataGot($this->dataService, $count));
-        $headers = array(
-            'Content-Type' => 'application/json; charset=utf-8'
-        );
-        return response()->json(['status' => StatusMessage::EVENT_SUCCESS, 'detail' => '[event] 資料產生中，將產生'.$count.'筆'], Response::HTTP_OK, $headers, JSON_UNESCAPED_UNICODE);
+        return response()->json(['status' => StatusMessage::EVENT_SUCCESS, 'detail' => '[event] 資料產生中，將產生'.$count.'筆'], Response::HTTP_OK, [], JSON_UNESCAPED_UNICODE);
     }
 
     public function storeByJob(Request $request): JsonResponse
     {
         $count = $request->input('count');
         $this->dispatch(new CreateData($this->dataService, $count));
-        $headers = array(
-            'Content-Type' => 'application/json; charset=utf-8'
-        );
-        return response()->json(['status' => StatusMessage::EVENT_SUCCESS, 'detail' => '[job] 資料產生中，將產生'.$count.'筆'], Response::HTTP_OK, $headers, JSON_UNESCAPED_UNICODE);
+        return response()->json(['status' => StatusMessage::EVENT_SUCCESS, 'detail' => '[job] 資料產生中，將產生'.$count.'筆'], Response::HTTP_OK, [], JSON_UNESCAPED_UNICODE);
     }
 }
