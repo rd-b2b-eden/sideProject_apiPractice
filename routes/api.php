@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['namespace' => 'App\Http\Controllers\Api\v1', 'prefix' => 'v1'], function () {
+    Route::post('command/data', 'DataController@storeByCommand')->name('api.v1.command.data');
+    Route::post('event/data', 'DataController@storeByEvent')->name('api.v1.event.data');
+    Route::post('job/data', 'DataController@storeByJob')->name('api.v1.job.data');
 });
