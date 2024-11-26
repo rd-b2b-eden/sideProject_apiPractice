@@ -48,7 +48,6 @@ class Handler extends ExceptionHandler
             'status' => StatusMessage::ERROR,
             'detail' => $exception->getMessage(),
         ];
-        $defaultErrorCode = ResponseAlias::HTTP_INTERNAL_SERVER_ERROR;
         if ($exception instanceof ApiException) {
             $defaultError['status'] = StatusMessage::API_ERROR;
             $defaultError['detail'] = '[Error] Api錯誤';
@@ -57,6 +56,6 @@ class Handler extends ExceptionHandler
             $defaultError['status'] = StatusMessage::DATABASE_INSERT_ERROR;
             $defaultError['detail'] = '[Error] 資料庫匯入錯誤';
         }
-        return response()->json($defaultError, $defaultErrorCode, [], JSON_UNESCAPED_UNICODE);
+        return response()->json($defaultError);
     }
 }
