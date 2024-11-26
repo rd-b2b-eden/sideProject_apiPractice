@@ -2,7 +2,10 @@
 
 namespace App\Exceptions;
 
+use App\Formatter\Formatter;
+use App\Formatter\response\StatusMessage;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\JsonResponse;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -37,5 +40,23 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $exception): JsonResponse
+    {
+        $formatter = new Formatter();
+        $defaultError = [
+            'status' => StatusMessage::ERROR,
+            'description' => $exception->getMessage(),
+        ];
+        if ($exception instanceof ApiException) {
+            $defaultError['status'] = StatusMessage::API_ERROR;
+            $defaultError['description'] = '[Error] Api錯誤';
+        }
+        if ($exception instanceof DatabaseException) {
+            $defaultError['status'] = StatusMessage::DATABASE_INSERT_ERROR;
+            $defaultError['description'] = '[Error] 資料庫匯入錯誤';
+        }
+        return $formatter->dataResponse($defaultError);
     }
 }
