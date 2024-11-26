@@ -2,14 +2,11 @@
 
 namespace App\Service;
 
-use App\Common\StatusMessage;
-use App\Exceptions\ApiException;
 use App\Exceptions\DatabaseException;
+use App\Formatter\response\StatusMessage;
 use App\Models\Data;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Str;
-use Symfony\Component\HttpFoundation\Response;
 
 class DataService
 {
@@ -34,9 +31,13 @@ class DataService
      * @return void
      * 建立queue
      */
-    public function createQueue($count): void
+    public function createQueue($count): array
     {
         $redis = Redis::connection();
         $redis->set('data-request-'.Str::uuid()->toString(),$count);
+        return [
+            'status' => StatusMessage::COMMAND_SUCCESS,
+            'description' => '[command] 資料產生中，將產生' . $count . '筆',
+        ];
     }
 }

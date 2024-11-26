@@ -2,10 +2,10 @@
 
 namespace App\Exceptions;
 
-use App\Common\StatusMessage;
+use App\Formatter\Formatter;
+use App\Formatter\response\StatusMessage;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
-use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -44,18 +44,19 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $exception): JsonResponse
     {
+        $formatter = new Formatter();
         $defaultError = [
             'status' => StatusMessage::ERROR,
-            'detail' => $exception->getMessage(),
+            'description' => $exception->getMessage(),
         ];
         if ($exception instanceof ApiException) {
             $defaultError['status'] = StatusMessage::API_ERROR;
-            $defaultError['detail'] = '[Error] Api錯誤';
+            $defaultError['description'] = '[Error] Api錯誤';
         }
         if ($exception instanceof DatabaseException) {
             $defaultError['status'] = StatusMessage::DATABASE_INSERT_ERROR;
-            $defaultError['detail'] = '[Error] 資料庫匯入錯誤';
+            $defaultError['description'] = '[Error] 資料庫匯入錯誤';
         }
-        return response()->json($defaultError);
+        return $formatter->dataResponse($defaultError);
     }
 }
