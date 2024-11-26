@@ -16,7 +16,9 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
-
+        DataGot::class => [
+            InsertData::class,
+        ]
     ];
 
     /**
@@ -26,9 +28,6 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Event::listen(DataGot::class, function ($event) {
-            app(InsertData::class)
-                ->handle($event, app(DataService::class));
-        });
+        //
     }
 }
