@@ -28,7 +28,7 @@ class DataControllerTest extends TestCase
                 "status" => "0001",
                 "description" => "[command] 資料產生中，將產生1筆"
             ]
-        ])->assertStatus(200);
+        ])->assertOK();
     }
 
     public function testCommandApiRequestNoParameter()
@@ -75,7 +75,7 @@ class DataControllerTest extends TestCase
                 "status" => "0002",
                 "description" => "[event] 資料產生中，將產生1筆"
             ]
-        ])->assertStatus(200);
+        ])->assertOK();
         Event::assertDispatched(DataGot::class);
     }
 
@@ -131,7 +131,7 @@ class DataControllerTest extends TestCase
                 "status" => "0003",
                 "description" => "[job] 資料產生中，將產生5筆"
             ]
-        ])->assertStatus(200);
+        ])->assertOK();
         Bus::assertDispatched(CreateData::class);
     }
 
