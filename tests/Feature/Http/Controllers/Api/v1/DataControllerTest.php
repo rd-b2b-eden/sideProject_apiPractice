@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Http\Controllers\Api\v1;
 
 use App\Events\DataGot;
 use App\Jobs\CreateData;
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Redis;
 use Tests\TestCase;
 
-class ApiTest extends TestCase
+class DataControllerTest extends TestCase
 {
     use RefreshDatabase;
 
