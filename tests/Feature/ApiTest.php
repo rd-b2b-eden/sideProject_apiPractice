@@ -14,7 +14,7 @@ class ApiTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_command_api_request_successfully()
+    public function testCommandApiRequestSuccessfully()
     {
         // Act
         // Assert
@@ -31,7 +31,7 @@ class ApiTest extends TestCase
         ])->assertStatus(200);
     }
 
-    public function test_command_api_request_no_parameter()
+    public function testCommandApiRequestNoParameter()
     {
         // Act
         // Assert
@@ -45,7 +45,7 @@ class ApiTest extends TestCase
         ])->assertStatus(500);
     }
 
-    public function test_command_api_request_invalid_parameter()
+    public function testCommandApiRequestInvalidParameter()
     {
         // Act
         // Assert
@@ -60,7 +60,7 @@ class ApiTest extends TestCase
         ])->assertStatus(500);
     }
 
-    public function test_event_api_request_successfully()
+    public function testEventApiRequestSuccessfully()
     {
         // Arrange
         Event::fake();
@@ -79,7 +79,7 @@ class ApiTest extends TestCase
         Event::assertDispatched(DataGot::class);
     }
 
-    public function test_event_api_request_no_parameter()
+    public function testEventApiRequestNoParameter()
     {
         // Arrange
         Event::fake();
@@ -97,7 +97,7 @@ class ApiTest extends TestCase
         Event::assertNotDispatched(DataGot::class);
     }
 
-    public function test_event_api_request_invalid_parameter()
+    public function testEventApiRequestInvalidParameter()
     {
         // Arrange
         Event::fake();
@@ -116,7 +116,7 @@ class ApiTest extends TestCase
         Event::assertNotDispatched(DataGot::class);
     }
 
-    public function test_job_api_request_successfully()
+    public function testJobApiRequestSuccessfully()
     {
         // Arrange
         Bus::fake();
@@ -135,7 +135,7 @@ class ApiTest extends TestCase
         Bus::assertDispatched(CreateData::class);
     }
 
-    public function test_job_api_request_no_parameter()
+    public function testJobApiRequestNoParameter()
     {
         // Arrange
         Bus::fake();
@@ -153,7 +153,7 @@ class ApiTest extends TestCase
         Bus::assertNotDispatched(CreateData::class);
     }
 
-    public function test_job_api_request_invalid_parameter()
+    public function testJobApiRequestInvalidParameter()
     {
         // Arrange
         Bus::fake();

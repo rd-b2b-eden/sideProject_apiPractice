@@ -21,7 +21,7 @@ class DataTest extends TestCase
         $this->dataService = $this->instance(DataService::class, $this->dataServiceMock);
     }
 
-    public function test_database_insert_successfully()
+    public function testDatabaseInsertSuccessfully()
     {
         // Act
         $data = Data::factory()->count(3)->make();
@@ -31,7 +31,7 @@ class DataTest extends TestCase
         $this->assertEquals(3, $data->count());
     }
 
-    public function test_data_service_create_data_successfully()
+    public function testDataServiceCreateDataSuccessfully()
     {
         // Act
         // Assert
@@ -42,7 +42,7 @@ class DataTest extends TestCase
         $this->dataService->createData(3);
     }
 
-    public function test_data_service_create_queue_successfully()
+    public function testDataServiceCreateQueueSuccessfully()
     {
         // Act
         // Assert
