@@ -16,12 +16,10 @@ class ApiTest extends TestCase
 
     public function test_command_api_request_successfully()
     {
-        // Arrange
-        $redisSpy = Redis::spy();
-
         // Act
         // Assert
-        $redisSpy->shouldReceive('connection')->andReturnSelf();
+        Redis::shouldReceive('connection')->andReturnSelf();
+        Redis::shouldReceive('set')->once();
         $this->postJson('api/v1/command/data', [
             'count' => 1,
             'uuid' => 'asdf',
@@ -31,7 +29,6 @@ class ApiTest extends TestCase
                 "description" => "[command] 資料產生中，將產生1筆"
             ]
         ])->assertStatus(200);
-        $redisSpy->shouldHaveReceived('set')->once();
     }
 
     public function test_command_api_request_no_parameter()
