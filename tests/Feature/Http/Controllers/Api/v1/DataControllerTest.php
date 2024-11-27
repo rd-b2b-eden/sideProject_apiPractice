@@ -49,7 +49,7 @@ class DataControllerTest extends TestCase
     {
         // Act
         // Assert
-        $this->withExceptionHandling()->postJson('api/v1/command/data', [
+        $this->postJson('api/v1/command/data', [
             'count' => 'test',
             'uuid' => 'asdf',
         ])->assertExactJson([
@@ -104,7 +104,7 @@ class DataControllerTest extends TestCase
 
         // Act
         // Assert
-        $this->withExceptionHandling()->postJson('api/v1/event/data', [
+        $this->postJson('api/v1/event/data', [
             'count' => 'test',
             'uuid' => 'asdf',
         ])->assertExactJson([
@@ -160,7 +160,7 @@ class DataControllerTest extends TestCase
 
         // Act
         // Assert
-        $this->withExceptionHandling()->postJson('api/v1/job/data', [
+        $this->postJson('api/v1/job/data', [
             'count' => 'test',
             'uuid' => 'asdf',
         ])->assertExactJson([
