@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use App\Exceptions\DatabaseException;
 use App\Formatter\response\StatusMessage;
 use App\Models\Data;
 use Illuminate\Support\Facades\Redis;
@@ -12,7 +11,6 @@ class DataService
 {
     private int $sleepSecond = 1; //延遲時間
     /**
-     * @throws DatabaseException
      */
     public function createData(int $count): void
     {
@@ -27,11 +25,11 @@ class DataService
     }
 
     /**
-     * @param $count
-     * @return void
+     * @param int $count
+     * @return array 建立queue
      * 建立queue
      */
-    public function createQueue($count): array
+    public function createQueue(int $count): array
     {
         $redis = Redis::connection();
         $redis->set('data-request-'.Str::uuid()->toString(),$count);
