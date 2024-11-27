@@ -5,14 +5,11 @@ namespace Tests\Unit;
 use App\Models\Data;
 use App\Service\DataService;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery\MockInterface;
 use Tests\TestCase;
 
 class DataTest extends TestCase
 {
-    use refreshDatabase;
-
     private MockInterface $dataServiceMock;
 
     private object $dataService;
