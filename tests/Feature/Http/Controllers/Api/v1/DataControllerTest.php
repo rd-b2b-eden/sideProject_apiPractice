@@ -4,10 +4,13 @@ namespace Tests\Feature\Http\Controllers\Api\v1;
 
 use App\Events\DataGot;
 use App\Jobs\CreateData;
+use App\Listeners\InsertData;
 use Event;
+use Illuminate\Events\CallQueuedListener;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Redis;
+use Queue;
 use Tests\TestCase;
 
 class DataControllerTest extends TestCase
@@ -62,6 +65,22 @@ class DataControllerTest extends TestCase
 
     public function testEventApiRequestSuccessfully()
     {
+        // Act
+        // Assert
+        $this->postJson('api/v1/event/data', [
+            'count' => 3,
+            'uuid' => 'asdf',
+        ])->assertExactJson([
+            "metadata" => [
+                "status" => "0002",
+                "description" => "[event] 資料產生中，將產生3筆"
+            ]
+        ])->assertOK();
+        $this->assertDatabaseCount('data', 3);
+    }
+
+    public function testEventApiRequestTriggerEventSuccessfully()
+    {
         // Arrange
         Event::fake();
 
@@ -77,6 +96,26 @@ class DataControllerTest extends TestCase
             ]
         ])->assertOK();
         Event::assertDispatched(DataGot::class);
+        Event::assertListening(DataGot::class, InsertData::class);
+    }
+    public function testEventApiRequestPutQueueSuccessfully()
+    {
+        // Arrange
+        Queue::fake();
+        // Act
+        // Assert
+        $this->postJson('api/v1/event/data', [
+            'count' => 1,
+            'uuid' => 'asdf',
+        ])->assertExactJson([
+            "metadata" => [
+                "status" => "0002",
+                "description" => "[event] 資料產生中，將產生1筆"
+            ]
+        ])->assertOK();
+        Queue::assertPushed(CallQueuedListener::class, function ($job) {
+            return $job->class === InsertData::class;
+        });
     }
 
     public function testEventApiRequestNoParameter()
@@ -117,6 +156,22 @@ class DataControllerTest extends TestCase
     }
 
     public function testJobApiRequestSuccessfully()
+    {
+        // Act
+        // Assert
+        $this->postJson('api/v1/job/data', [
+            'count' => 5,
+            'uuid' => 'asdf',
+        ])->assertExactJson([
+            "metadata" => [
+                "status" => "0003",
+                "description" => "[job] 資料產生中，將產生5筆"
+            ]
+        ])->assertOK();
+        $this->assertDatabaseCount('data', 5);
+    }
+
+    public function testJobApiRequestPutQueueSuccessfully()
     {
         // Arrange
         Bus::fake();
